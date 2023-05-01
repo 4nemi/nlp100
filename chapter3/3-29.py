@@ -3,8 +3,15 @@ import re
 
 def get_url(kiso_dict):
     url_file = kiso_dict['国旗画像'].replace(' ', '_')
-    url = 'https://commons.wikimedia.org/w/api.php?action=query&titles=File:' + url_file + '&prop=imageinfo&iiprop=url&format=json'
-    data = requests.get(url)
+    url = 'https://commons.wikimedia.org/w/api.php'
+    params = {
+        "action": "query",
+        "format": "json",
+        "prop": "imageinfo",
+        "iiprop": "url",
+        "titles": f"File:{url_file}"
+    }
+    data = requests.get(url=url, params=params)
     return re.search(r'"url":"(.+?)"', data.text).group(1)
 
 def remove_markup(target):

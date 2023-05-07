@@ -1,0 +1,6 @@
+*.txt
+*.mecab
+myenv
+*.png
+__pycache__
+.DS_Store

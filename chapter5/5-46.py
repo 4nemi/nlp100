@@ -1,24 +1,23 @@
 from morph import Morph
 from chunk import Chunk
 """
-動詞を述語，動詞に係っている文節の助詞を格と考え，述語と格をタブ区切り形式で出力せよ． ただし，出力は以下の仕様を満たすようにせよ．
-・動詞を含む文節において，最左の動詞の基本形を述語とする
-・述語に係る助詞を格とする
-・述語に係る助詞（文節）が複数あるときは，すべての助詞をスペース区切りで辞書順に並べる
+45のプログラムを改変し，述語と格パターンに続けて項（述語に係っている文節そのもの）をタブ区切り形式で出力せよ．45の仕様に加えて，以下の仕様を満たすようにせよ．
+
+・項は述語に係っている文節の単語列とする（末尾の助詞を取り除く必要はない）
+・述語に係る文節が複数あるときは，助詞と同一の基準・順序でスペース区切りで並べる
 """
 
-def extract_case_pattern(sentence):
+def extract_case_and_phrase(sentence):
     for chunk in sentence:
-        #chunkに動詞が含まれているか
         if "動詞" in [morph.pos for morph in chunk.morphs]:
-            #chunkに含まれる最左の動詞の基本形
             predicate = [morph.base for morph in chunk.morphs if morph.pos == "動詞"][0]
-            #動詞に係る文節の助詞のリスト
             cases = []
+            phrases = []
             for src in chunk.srcs:
                 cases += [morph.surface for morph in sentence[src].morphs if morph.pos == "助詞"]
+                phrases += [morph.surface for morph in sentence[src].morphs if morph.pos != "記号"]
             if cases:
-                print(f"{predicate}\t{' '.join(sorted(cases))}")
+                print(f"{predicate}\t{' '.join(sorted(cases))}\t{' '.join(phrases)}")
 
 if __name__ == "__main__":
     with open("ai.ja.txt.parsed") as f:
@@ -41,9 +40,5 @@ if __name__ == "__main__":
                 sentences.append(sentence)
                 sentence = []
                 chunk = None
-
-    for sentence in sentences:
-        extract_case_pattern(sentence)
-
-
-
+                
+    extract_case_and_phrase(sentences[7])

@@ -7,3 +7,5 @@ __pycache__
 *.parsed
 chapter6/*
 !chapter6/*.py
+chapter7/*
+!chapter7/*.py

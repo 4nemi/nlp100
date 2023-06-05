@@ -9,3 +9,5 @@ chapter6/*
 !chapter6/*.py
 chapter7/*
 !chapter7/*.py
+chapter8/*
+!chapter8/*.py

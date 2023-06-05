@@ -1,0 +1,20 @@
+version: '3'
+services:
+  nlp100:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: ml
+    container_name: nlp100
+    volumes:
+      - .:/home/ubuntu/project
+    tty: true
+    stdin_open: true
+    #command: /bin/bash
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
